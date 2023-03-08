@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-export default function Preview({ deleteNote, notes }) {
+export default function Preview({ deleteNote, notes, hidden, handleEdit }) {
   const [value, setValue] = useState("");
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
@@ -25,7 +25,7 @@ export default function Preview({ deleteNote, notes }) {
   }, [id, notes]);
 
   return (
-    <div className="main-container">
+    <div className={hidden ? "main-container-expanded" : "main-container"}>
       <div className="main-note-preview">
         <div className="main-note-header">
           <div className="main-note-title">
@@ -34,7 +34,7 @@ export default function Preview({ deleteNote, notes }) {
           </div>
           <div className="main-note-buttons">
             <Link to={`/notes/${id}/edit`}>
-              <button>Edit</button>
+              <button onClick={() => handleEdit(id)}>Edit</button>
             </Link>
             <button navigate={"/"} onClick={() => deleteNote(id)}>
               Delete

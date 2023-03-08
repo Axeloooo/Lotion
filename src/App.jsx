@@ -8,9 +8,17 @@ import Editor from "./components/Editor";
 import Sidebar from "./components/Sidebar";
 
 export default function App() {
+  const [hidden, setHidden] = useState(false);
+
   const [notes, setNotes] = useState([]);
 
   const [activeNote, setActiveNote] = useState(false);
+
+  const [value, setValue] = useState("");
+
+  const [title, setTitle] = useState("Untitled");
+
+  const [date, setDate] = useState(new Date());
 
   const regex = /(<([^>]+)>)/gi;
 
@@ -31,7 +39,11 @@ export default function App() {
   };
 
   const handleDeleteNote = (id) => {
-    setNotes(notes.filter((note) => note.id !== id));
+    const answer = window.confirm("Are you sure?");
+    if (answer) {
+      setNotes(notes.filter((note) => note.id !== id));
+    }
+    return;
   };
 
   const handleAddNote = () => {
@@ -55,6 +67,23 @@ export default function App() {
     setNotes(newNotes);
   };
 
+  const handleHideSidebar = () => {
+    if (!hidden) {
+      setHidden(true);
+    } else {
+      setHidden(false);
+    }
+  };
+
+  const handleEdit = (id) => {
+    const note = notes.find((note) => note.id === id);
+    if (note) {
+      setTitle(note.title);
+      setValue(note.body);
+      setDate(note.lastModified);
+    }
+  };
+
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
@@ -69,18 +98,26 @@ export default function App() {
   return (
     <div className="container">
       <BrowserRouter>
-        <Navbar />
+        <Navbar handleHideSidebar={handleHideSidebar} />
         <Sidebar
           notes={notes}
           handleAddNote={handleAddNote}
           activeNote={activeNote}
           setActiveNote={setActiveNote}
+          hidden={hidden}
         />
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route path="/" element={<Main hidden={hidden} />} />
           <Route
             path="/notes/:id"
-            element={<Preview deleteNote={handleDeleteNote} notes={notes} />}
+            element={
+              <Preview
+                deleteNote={handleDeleteNote}
+                notes={notes}
+                hidden={hidden}
+                handleEdit={handleEdit}
+              />
+            }
           />
           <Route
             path="notes/:id/edit"
@@ -89,6 +126,13 @@ export default function App() {
                 deleteNote={handleDeleteNote}
                 saveNote={handleSaveNote}
                 notes={notes}
+                hidden={hidden}
+                value={value}
+                setValue={setValue}
+                title={title}
+                setTitle={setTitle}
+                date={date}
+                setDate={setDate}
               />
             }
           />

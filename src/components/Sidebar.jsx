@@ -6,9 +6,10 @@ export default function Sidebar({
   handleAddNote,
   setActiveNote,
   activeNote,
+  hidden,
 }) {
   return (
-    <div className="sidebar-container">
+    <div className={hidden ? "sidebar-container-hidden" : "sidebar-container"}>
       <div className="sidebar-header">
         <h1>Notes</h1>
         <button onClick={handleAddNote}>+</button>

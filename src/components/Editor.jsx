@@ -1,12 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-export default function Editor({ deleteNote, saveNote, notes }) {
-  const [title, setTitle] = useState("Untitled");
-  const [value, setValue] = useState("");
-  const [date, setDate] = useState(new Date());
+export default function Editor({
+  deleteNote,
+  saveNote,
+  notes,
+  hidden,
+  value,
+  setValue,
+  title,
+  setTitle,
+  date,
+  setDate,
+}) {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -19,7 +27,7 @@ export default function Editor({ deleteNote, saveNote, notes }) {
   }, [id, notes, navigate]);
 
   return (
-    <div className="main-container">
+    <div className={hidden ? "main-container-expanded" : "main-container"}>
       <div className="main-note-editor">
         <div className="main-note-header">
           <div className="main-note-title">

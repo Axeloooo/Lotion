@@ -64,6 +64,9 @@ button:hover {
   height: 100vh;
   border-right: 1px solid #ddd;
 }
+.sidebar-container-hidden {
+  display: none;
+}
 .sidebar-header {
   display: flex;
   justify-content: space-between;
@@ -115,6 +118,9 @@ button:hover {
 }
 .main-container {
   width: 70%;
+}
+.main-container-expanded {
+  width: 100%;
 }
 .main-note-editor, .main-note-preview {
   height: 100vh;
